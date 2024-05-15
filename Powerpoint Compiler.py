@@ -1,7 +1,7 @@
 ######################################################################
 # Author: Sam McFarland
 #
-# Purpose: A program which takes photos and compiles them in different folders for use with different donors.
+# Purpose: A program which takes photos and compiles them in a folder for use with different donors.
 ######################################################################
 
 from pptx import Presentation
@@ -11,6 +11,11 @@ import os
 
 
 def create_desktop_folder(folder_name):
+    """
+    Creates a desktop folder for the powerpoints to be stored at
+    :param folder_name: The name of the folder you'd like to create
+    :return:
+    """
     # Get the path to the user's home directory
     path_to_user = os.path.expanduser("~")
 
@@ -19,7 +24,7 @@ def create_desktop_folder(folder_name):
 
     # Create the folder
     new_folder_path = os.path.join(path_to_desktop, folder_name)
-    os.makedirs(new_folder_path)
+    os.makedirs(new_folder_path, exist_ok=True)
 
 
 def resize_image(image):
@@ -44,15 +49,9 @@ def resize_image(image):
 
 def construct_pp():
     """
-    Constructs the not-personalized base powerpoint using photos that should be included in each powerpoint.
+    Constructs the not-personalized, base PowerPoint using photos that should be included in each PowerPoint.
     :return: None
     """
-    # Giving Image path for each image
-    img_path = 'Photos/Construction Photo 1.jpeg'
-    img2_path = 'Photos/Construction Photo 2.jpg'
-    img3_path = 'Photos/Construction Photo 3.jpg'
-    img4_path = 'Photos/Construction Photo 4.jpg'
-
     # Creating a Presentation object
     ppt = Presentation()
 
@@ -60,23 +59,22 @@ def construct_pp():
     ppt.slide_width = Inches(16)
     ppt.slide_height = Inches(9)
 
-    # Selecting blank slide
-    blank_slide_layout = ppt.slide_layouts[6]
+    # Goes through the photos and adds them to a PowerPoint
+    for num in range(1, 16):
+        # Giving Image path for each image
+        img_path = 'Photos/Construction' + str(num) + '.jpg'
 
-    # Attaching slides to ppt
-    slide = ppt.slides.add_slide(blank_slide_layout)
-    slide2 = ppt.slides.add_slide(blank_slide_layout)
-    slide3 = ppt.slides.add_slide(blank_slide_layout)
-    slide4 = ppt.slides.add_slide(blank_slide_layout)
+        # Selecting blank slide
+        blank_slide_layout = ppt.slide_layouts[6]
 
-    # For no margins
-    left = top = Inches(0)
+        # Attaching slides to ppt
+        slide = ppt.slides.add_slide(blank_slide_layout)
 
-    # adding images to each slide
-    slide.shapes.add_picture(img_path, left, top)
-    slide2.shapes.add_picture(img2_path, left, top)
-    slide3.shapes.add_picture(img3_path, left, top)
-    slide4.shapes.add_picture(img4_path, left, top)
+        # For no margins
+        left = top = Inches(0)
+
+        # adding images to each slide
+        slide.shapes.add_picture(img_path, left, top)
 
     # save file
     ppt.save('base.pptx')
@@ -84,7 +82,7 @@ def construct_pp():
 
 def add_donor(donor):
     """
-    A function for adding specific donor photos to the base powerpoint, saving them in a specific file.
+    A function for adding specific donor photos to the base PowerPoint, saving them in a specific file.
     :param donor: The name of the donor photo to be added.
     :return:
     """
@@ -102,33 +100,45 @@ def add_donor(donor):
     slide = ppt.slides.add_slide(blank_slide_layout)
     slide.shapes.add_picture(img_path, left, top)
 
-    # Sets the path to save the new powerpoint and saves it
-    path = "C:/Users/mcfarlands/Desktop/Donor Power Points/"
-    ppt.save(path + donor + ".pptx")
+    # Get the path to the user's home directory
+    path_to_user = os.path.expanduser("~")
+
+    # Combine with the Desktop folder
+    path_to_desktop = os.path.join(path_to_user, "Desktop")
+
+    # Saves the new specific donor PowerPoint to the folder on the desktop
+    ppt.save(str(path_to_desktop) + "/Donor PowerPoints/" + donor + ".pptx")
 
 
 def main():
     """
-    A function that resizes the images to the correct size and creates powerpoints from them.
+    A function that resizes the images to the correct size and creates PowerPoints from them.
     :return: None
     """
-    create_desktop_folder("Donor Power Points")
+    # Makes the folder to put the PowerPoints in
+    create_desktop_folder("Donor PowerPoints")
+
     # Resizes the images to the correct size
-    resize_image("Photos/Construction Photo 1.jpeg")
-    resize_image("Photos/Construction Photo 2.jpg")
-    resize_image("Photos/Construction Photo 3.jpg")
-    resize_image("Photos/Construction Photo 4.jpg")
+    for num in range(1, 16):
+        resize_image('Photos/Construction' + str(num) + '.jpg')
+
     resize_image("Personal_photos/Jack.jpg")
     resize_image("Personal_photos/Joan.jpg")
     resize_image("Personal_photos/Koning.jpg")
+    resize_image("Personal_photos/Miller.jpg")
+    resize_image("Personal_photos/Shaw.jpg")
+    resize_image("Personal_photos/Bateman.jpg")
 
-    # Constructs the base powerpoint and a powerpoint for each donor
+    # Constructs the base PowerPoint and a PowerPoint for each donor
     construct_pp()
     add_donor("Jack")
     add_donor("Joan")
     add_donor("Koning")
+    add_donor("Miller")
+    add_donor("Shaw")
+    add_donor("Bateman")
 
-    print("Your powerpoints have been created!")
+    print("Your PowerPoints have been created!")
 
 
 if __name__ == "__main__":
