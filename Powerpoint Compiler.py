@@ -7,6 +7,19 @@
 from pptx import Presentation
 from pptx.util import Inches
 from PIL import Image
+import os
+
+
+def create_desktop_folder(folder_name):
+    # Get the path to the user's home directory
+    path_to_user = os.path.expanduser("~")
+
+    # Combine with the Desktop folder
+    path_to_desktop = os.path.join(path_to_user, "Desktop")
+
+    # Create the folder
+    new_folder_path = os.path.join(path_to_desktop, folder_name)
+    os.makedirs(new_folder_path)
 
 
 def resize_image(image):
@@ -99,6 +112,7 @@ def main():
     A function that resizes the images to the correct size and creates powerpoints from them.
     :return: None
     """
+    create_desktop_folder("Donor Power Points")
     # Resizes the images to the correct size
     resize_image("Photos/Construction Photo 1.jpeg")
     resize_image("Photos/Construction Photo 2.jpg")
