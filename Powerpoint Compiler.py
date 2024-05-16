@@ -1,7 +1,7 @@
 ######################################################################
 # Author: Sam McFarland
 #
-# Purpose: A program which takes photos and compiles them in a folder for use with different donors.
+# Purpose: A program which takes photos and compiles them in a specialized PowerPoint for use with different donors.
 ######################################################################
 
 from pptx import Presentation
@@ -112,7 +112,7 @@ def add_donor(donor):
 
 def main():
     """
-    A function that resizes the images to the correct size and creates PowerPoints from them.
+    A function that resizes the images to the correct size and creates personalized PowerPoints for donors.
     :return: None
     """
     # Makes the folder to put the PowerPoints in
